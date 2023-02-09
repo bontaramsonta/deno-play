@@ -1,62 +1,50 @@
-
-export function longestCommonSubsequence(a: string, b: string, i: number, j:number, dp: Map<string,number>): number {
-  // one of the strings is empty
-  if( i==0 || j==0 ) {
-    return 0
+export function spiralTraversal(
+  matrix: number[][],
+  n: number,
+  m: number,
+  o = 0,
+) {
+  console.log("call ", o + 1);
+  const result: number[] = [];
+  // for top boundary
+  for (let i = o; i < m - o; i++) {
+    result.push(matrix[o][i]);
   }
-  // already cached max lcs
-  if(dp.has(`${i} ${j}`)) {
-    console.log('[cache hit]')
-    //@ts-ignore checked with .has
-    return dp.get(`${i} ${j}`)
+  // for right boundary
+  for (let i = 1 + o; i < n - o; i++) {
+    result.push(matrix[i][m - 1 - o]);
   }
-  // characters are equal
-  if(a[i-1] == b[j-1]) {
-    const result = 1 + longestCommonSubsequence(a,b,i-1,j-1,dp)
-    dp.set(`${i} ${j}`,result)
-    return result
+  if (n - (2 * o) !== 1) { // don't print bottom if same as top
+    // for bottom boundary
+    console.log("bottom", o, n - o);
+    for (let i = m - 2 - o; i >= o; i--) {
+      result.push(matrix[n - 1 - o][i]);
+    }
   }
-  // characters are not equal
-  else {
-    const result = Math.max(longestCommonSubsequence(a,b,i-1,j,dp),longestCommonSubsequence(a,b,i,j-1,dp))
-    dp.set(`${i} ${j}`,result)
-    return result
+  if (m - (2 * o) !== 1) { // don't print if same as right
+    // for left boundary
+    console.log("left", o, m - o);
+    for (let i = n - 2 - o; i >= 1 + o; i--) {
+      result.push(matrix[i][o]);
+    }
   }
+  if (n - (2 * (o + 1)) > 0 && m - (2 * (o + 1)) > 0) {
+    console.log("base", n, n - (2 * (o + 1)), m, m - (2 * (o + 1)));
+    result.push(...spiralTraversal(matrix, n, m, o + 1));
+  }
+  return result;
 }
 
 // Learn more at https://deno.land/manual/examples/module_metadata#concepts
 if (import.meta.main) {
-  const a = 'aobcd'
-  const b = 'abed'
-  const dp: Map<string,number> = new Map()
-  // const a = 'abcdavrt'
-  // const b = 'abedagjt'
-  const r = longestCommonSubsequence(a,b,a.length,b.length,dp)
-  console.log(r)
-  console.log(dp)
+  const matrix = [
+    [1, 2, 3, 4],
+    [5, 6, 7, 8],
+    [9, 10, 11, 12],
+    [13, 14, 15, 16],
+  ];
+  const n = 4;
+  const m = 4;
+  const result = spiralTraversal(matrix, n, m);
+  console.log(result.join(" "));
 }
-
-Deno.bench({
-  name: "baseline",
-  group: 'group',
-  baseline: true,
-  fn: () => {
-    const dp: Map<string,number> = new Map()
-    const a = 'abcd'
-    const b = 'abed'
-    const r = longestCommonSubsequence(a,b,a.length,b.length,dp)
-    // console.log(r)
-  }
-})
-
-Deno.bench({
-  name: "edge case",
-  group: 'group',
-  fn: () => {
-    const dp: Map<string,number> = new Map()
-    const a = 'abcdavrtjthsrhsv'
-    const b = 'abedagjthuvaeeyv'
-    const r = longestCommonSubsequence(a,b,a.length,b.length,dp)
-    // console.log(r)
-  }
-})

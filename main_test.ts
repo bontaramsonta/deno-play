@@ -1,42 +1,31 @@
 import { assertEquals } from "https://deno.land/std@0.171.0/testing/asserts.ts";
+import { spiralTraversal } from "./main.ts";
 
-const MAP: Record<string,number> = {
-  I: 1,
-  V: 5,
-  X: 10,
-  L: 50,
-  C: 100,
-  D: 500,
-  M: 1000,
-}
+Deno.test(function baseTest() {
+  const matrix = [
+    [1, 2, 3, 4],
+    [5, 6, 7, 8],
+    [9, 10, 11, 12],
+    [13, 14, 15, 16],
+  ];
+  const n = 4;
+  const m = 4;
+  assertEquals(
+    spiralTraversal(matrix, n, m).join(" "),
+    "1 2 3 4 8 12 16 15 14 13 9 5 6 7 11 10",
+  );
+});
 
-const STACK = ['I','V','X','L','C','D','M']
-
-
-function romanToInt(roman: string): number {
-  let value = 0
-  const romanArr = roman.split('').reverse()
-  let previous: string | null = null
-  romanArr.forEach(char=> {
-    console.log(char,previous, MAP[char])
-    if(previous && STACK.indexOf(previous) > STACK.indexOf(char)) {
-      console.log('[hit reduce]',previous, char)
-      // reduce value
-      value -= MAP[char]
-    }else {
-      value += MAP[char] ?? 0
-    }
-    previous = char
-    console.log(value)
-  })
-  return value
-}
-
-Deno.test(function mainTest() {
-  assertEquals(romanToInt('IV'), 4);
-  // assertEquals(romanToInt(''), 7);
-  assertEquals(romanToInt('VII'), 7);
-  assertEquals(romanToInt('DCIX'), 609);
-  assertEquals(romanToInt('DCXC'), 690);
-  assertEquals(romanToInt('LMIV'), 954);
+Deno.test(function anotherTest() {
+  const matrix = [
+    [1, 2, 3, 4, 5, 6, 7],
+    [8, 9, 10, 11, 12, 13, 14],
+    [15, 16, 17, 18, 19, 20, 21],
+  ];
+  const n = 3;
+  const m = 7;
+  assertEquals(
+    spiralTraversal(matrix, n, m).join(" "),
+    "1 2 3 4 5 6 7 14 21 20 19 18 17 16 15 8 9 10 11 12 13",
+  );
 });
