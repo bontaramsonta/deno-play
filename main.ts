@@ -1,50 +1,39 @@
-export function spiralTraversal(
-  matrix: number[][],
-  n: number,
-  m: number,
-  o = 0,
+export function determinant(
+    matrix: number[][],
+    n: number,
 ) {
-  console.log("call ", o + 1);
-  const result: number[] = [];
-  // for top boundary
-  for (let i = o; i < m - o; i++) {
-    result.push(matrix[o][i]);
-  }
-  // for right boundary
-  for (let i = 1 + o; i < n - o; i++) {
-    result.push(matrix[i][m - 1 - o]);
-  }
-  if (n - (2 * o) !== 1) { // don't print bottom if same as top
-    // for bottom boundary
-    console.log("bottom", o, n - o);
-    for (let i = m - 2 - o; i >= o; i--) {
-      result.push(matrix[n - 1 - o][i]);
+    if (n == 1) {
+        return matrix[0][0];
+    } else if (n == 2) {
+        return (matrix[0][0] * matrix[1][1]) - (matrix[0][1] * matrix[1][0]);
+    } else {
+        let result = 0;
+        for (let i = 0; i < n; i++) {
+            // skip if co-eff is zero
+            if (matrix[0][i] !== 0) {
+                // generate cofactor matrix
+                const cofactor = matrix.slice(1).map((row) =>
+                    row.filter((_, index) => index !== i)
+                );
+                if (i % 2 == 0) {
+                    result += matrix[0][i] * determinant(cofactor, n - 1);
+                } else {
+                    result -= matrix[0][i] * determinant(cofactor, n - 1);
+                }
+            }
+        }
+        return result;
     }
-  }
-  if (m - (2 * o) !== 1) { // don't print if same as right
-    // for left boundary
-    console.log("left", o, m - o);
-    for (let i = n - 2 - o; i >= 1 + o; i--) {
-      result.push(matrix[i][o]);
-    }
-  }
-  if (n - (2 * (o + 1)) > 0 && m - (2 * (o + 1)) > 0) {
-    console.log("base", n, n - (2 * (o + 1)), m, m - (2 * (o + 1)));
-    result.push(...spiralTraversal(matrix, n, m, o + 1));
-  }
-  return result;
 }
 
-// Learn more at https://deno.land/manual/examples/module_metadata#concepts
 if (import.meta.main) {
-  const matrix = [
-    [1, 2, 3, 4],
-    [5, 6, 7, 8],
-    [9, 10, 11, 12],
-    [13, 14, 15, 16],
-  ];
-  const n = 4;
-  const m = 4;
-  const result = spiralTraversal(matrix, n, m);
-  console.log(result.join(" "));
+    const matrix = [
+        [1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [9, 10, 11, 12],
+        [13, 14, 15, 16],
+    ];
+    const n = 4;
+    const result = determinant(matrix, n);
+    console.log(result);
 }
