@@ -1,30 +1,19 @@
-class TreeNode {
-    val: number;
-    left: TreeNode | null;
-    right: TreeNode | null;
-    constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
-        this.val = val === undefined ? 0 : val;
-        this.left = left === undefined ? null : left;
-        this.right = right === undefined ? null : right;
+function average(salary: number[]) {
+    let max = Number.NEGATIVE_INFINITY;
+    let min = Number.POSITIVE_INFINITY;
+    let sum = 0;
+    for (let i = 0; i < salary.length; i++) {
+        if (salary[i] > max) {
+            max = salary[i];
+        }
+        if (salary[i] < min) {
+            min = salary[i];
+        }
+        sum += salary[i];
     }
-}
-
-function isMirror(left: TreeNode | null, right: TreeNode | null): boolean {
-    if (left === null && right === null) return true;
-    if (left === null || right === null) return false;
-    return left.val === right.val && isMirror(left.left, right.right) &&
-        isMirror(left.right, right.left);
-}
-
-function isSymmetric(root: TreeNode | null): boolean {
-    if (root === null) return true;
-    return isMirror(root.left, root.right);
+    return (sum - max - min) / (salary.length - 2);
 }
 if (import.meta.main) {
-    const Tree = new TreeNode(
-        1,
-        new TreeNode(2, new TreeNode(3), new TreeNode(4)),
-        new TreeNode(2, new TreeNode(4), new TreeNode(3)),
-    );
-    console.log(isSymmetric(Tree));
+    const salary = [4000, 3000, 1000, 2000];
+    console.log(average(salary));
 }
