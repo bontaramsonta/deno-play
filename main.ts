@@ -1,19 +1,30 @@
-function average(salary: number[]) {
-    let max = Number.NEGATIVE_INFINITY;
-    let min = Number.POSITIVE_INFINITY;
-    let sum = 0;
-    for (let i = 0; i < salary.length; i++) {
-        if (salary[i] > max) {
-            max = salary[i];
-        }
-        if (salary[i] < min) {
-            min = salary[i];
-        }
-        sum += salary[i];
+// const fizzerMap = {
+//     3: 'fizz',
+//     5: 'buzz',
+//     7: 'ripp',
+// };
+const fizzerMap = new Map();
+fizzerMap.set(3, 'fizz');
+fizzerMap.set(5, 'buzz');
+fizzerMap.set(7, 'ripp');
+function fizzBuzz(num: number): string {
+    let result = '';
+    if (num === 0) {
+        return result;
     }
-    return (sum - max - min) / (salary.length - 2);
+    let n = num;
+    for (const [k, v] of fizzerMap) {
+        if (n % k === 0) {
+            result += v;
+            n = n / k;
+        }
+    }
+    return result;
 }
 if (import.meta.main) {
-    const salary = [4000, 3000, 1000, 2000];
-    console.log(average(salary));
+    const results: string[] = [];
+    for (let i = 0; i < 100; i++) {
+        results.push(fizzBuzz(i));
+    }
+    console.log(results.map((s, i) => `[${i}] ${s}`).join('\n'));
 }
