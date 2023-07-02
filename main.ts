@@ -1,30 +1,31 @@
-// const fizzerMap = {
-//     3: 'fizz',
-//     5: 'buzz',
-//     7: 'ripp',
-// };
-const fizzerMap = new Map();
-fizzerMap.set(3, 'fizz');
-fizzerMap.set(5, 'buzz');
-fizzerMap.set(7, 'ripp');
-function fizzBuzz(num: number): string {
-    let result = '';
-    if (num === 0) {
-        return result;
+class TreeNode {
+    val: number;
+    left: TreeNode | null;
+    right: TreeNode | null;
+    constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+        this.val = val === undefined ? 0 : val;
+        this.left = left === undefined ? null : left;
+        this.right = right === undefined ? null : right;
     }
-    let n = num;
-    for (const [k, v] of fizzerMap) {
-        if (n % k === 0) {
-            result += v;
-            n = n / k;
-        }
-    }
-    return result;
 }
-if (import.meta.main) {
-    const results: string[] = [];
-    for (let i = 0; i < 100; i++) {
-        results.push(fizzBuzz(i));
+
+function sortedArrayToBST(nums: number[]): TreeNode | null {
+    if (nums.length === 0) {
+        return null;
     }
-    console.log(results.map((s, i) => `[${i}] ${s}`).join('\n'));
+    const mid = Math.floor(nums.length / 2);
+    console.log(mid, nums.slice(0, mid), nums.slice(mid + 1));
+    const node = new TreeNode(
+        nums[mid],
+        sortedArrayToBST(nums.slice(0, mid)),
+        sortedArrayToBST(nums.slice(mid + 1)),
+    );
+    return node;
+}
+
+if (import.meta.main) {
+    // const arr = [-10, -3, 0, 5, 9];
+    const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    const tree = sortedArrayToBST(arr);
+    console.log(tree);
 }
