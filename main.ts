@@ -1,19 +1,13 @@
-const movePoint: Record<string, number> = {
-    X: 1,
-    Y: 2,
-    Z: 3,
-};
-
-const winMap: Map<string, number> = new Map();
-winMap.set('A X', 0);
-winMap.set('A Y', 2);
-winMap.set('A Z', 1);
-winMap.set('B X', 1);
-winMap.set('B Y', 0);
-winMap.set('B Z', 2);
-winMap.set('C X', 2);
-winMap.set('C Y', 1);
-winMap.set('C Z', 0);
+const scoreMap: Map<string, number> = new Map();
+scoreMap.set('A X', 3);
+scoreMap.set('A Y', 4);
+scoreMap.set('A Z', 8);
+scoreMap.set('B X', 1);
+scoreMap.set('B Y', 5);
+scoreMap.set('B Z', 9);
+scoreMap.set('C X', 2);
+scoreMap.set('C Y', 6);
+scoreMap.set('C Z', 7);
 
 if (import.meta.main) {
     const contents = Deno.readFileSync('in.txt');
@@ -24,14 +18,8 @@ if (import.meta.main) {
     lines.forEach((line) => {
         const p1Move = line[0];
         const p2Move = line[1];
-        const p2MovePoint = movePoint[p2Move] as number;
-        totalScore += p2MovePoint;
-        const win = winMap.get(`${p1Move} ${p2Move}`) as number;
-        if (win === 2) {
-            totalScore += 6;
-        } else if (win === 0) {
-            totalScore += 3;
-        }
-        console.log(`${p1Move} ${p2Move}`, win, p2MovePoint, totalScore);
+        const score = scoreMap.get(`${p1Move} ${p2Move}`) as number;
+        totalScore += score;
+        console.log(`${p1Move} ${p2Move}`, totalScore);
     });
 }
