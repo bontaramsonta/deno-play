@@ -1,16 +1,18 @@
-function ifPairExistWithGivenSum(arr: number[], sum: number): boolean {
-    const set = new Set<number>();
-    for (const num of arr) {
-        if (set.has(sum - num)) {
-            return true;
+function printNonRepeated(arr: number[]): number[] {
+    const map = new Map<number, number>();
+    const nonRepeating = [];
+    arr.forEach((element) => {
+        map.set(element, (map.get(element) || 0) + 1);
+    });
+    for (const [key, value] of map.entries()) {
+        if (value === 1) {
+            nonRepeating.push(key);
         }
-        set.add(num);
     }
-    return false;
+    return nonRepeating;
 }
 
 if (import.meta.main) {
-    const arr = new Array(10).fill(0).map((_, i) => i + 1);
-    const sum = 14;
-    console.log(arr, sum, ifPairExistWithGivenSum(arr, sum));
+    const arr = [1, 1, 2, 2, 3, 3, 7, 5, 6, 4];
+    console.log(printNonRepeated(arr));
 }
