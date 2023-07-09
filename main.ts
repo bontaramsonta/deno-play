@@ -1,29 +1,18 @@
-function sortA1ByA2(arr1: number[], arr2: number[]) {
-    const map = new Map<number, number>();
-    const result: number[] = [];
-    // fill map with arr1 frequencies
-    for (const num of arr1) {
-        map.set(num, (map.get(num) || 0) + 1);
-    }
-    // fill result in order of arr2 with arr1 frequencies
-    for (const num2 of arr2) {
-        const freq = map.get(num2) || 0;
-        for (let i = 0; i < freq; i++) {
-            result.push(num2);
+function missingNumber(arr: number[]): number {
+    arr = arr.filter((e) => e >= 0);
+    arr.sort((a, b) => a - b);
+    console.log(arr);
+    let maxPositiveIntegerFound = 0;
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] === maxPositiveIntegerFound + 1) {
+            maxPositiveIntegerFound++;
         }
-        map.delete(num2);
     }
-    // fill result with remaining map keys
-    [...map.entries()].sort((a, b) => a[0] - b[0]).forEach(([key, freq]) => {
-        for (let i = 0; i < freq; i++) {
-            result.push(key);
-        }
-    });
-    return result;
+    return maxPositiveIntegerFound + 1;
 }
 
 if (import.meta.main) {
-    const arr1 = [45, 15, 23, 8, 5, 12, 26, 444, 888, 151, 12, 23, 45, 15, 56];
-    const arr2 = [15, 888, 444, 5, 8, 12, 23];
-    console.log(sortA1ByA2(arr1, arr2));
+    const arr = [0, 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12];
+    // const arr = [-2, -2, 1, -2, 0, -3, -4, -4, 0];
+    console.log(missingNumber(arr));
 }
