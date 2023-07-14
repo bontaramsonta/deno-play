@@ -1,15 +1,24 @@
-function separateChaining(hashSize: number, arr: number[]): number[][] {
-    const hashTable: number[][] = new Array(hashSize).fill(0).map(() => []);
-    for (let i = 0; i < arr.length; i++) {
-        const hash = Math.abs(arr[i]) % hashSize;
-        hashTable[hash].push(arr[i]);
+function check(A: number[], B: number[], _N: number): boolean {
+    const frequencyMap = new Map();
+    // seed the map
+    for (const element of A) {
+        frequencyMap.set(element, (frequencyMap.get(element) || 0) + 1);
     }
-    return hashTable;
+    for (const element of B) {
+        const frequency = frequencyMap.get(element);
+        if (frequency === undefined) {
+            return false;
+        } else if (frequency === 1) {
+            frequencyMap.delete(element);
+        } else {
+            frequencyMap.set(element, frequency - 1);
+        }
+    }
+    return [...frequencyMap.keys()].length === 0;
 }
-
 if (import.meta.main) {
-    const hashSize = 10;
-    const arr = [92, 4, 14, 24, 44, 91];
-    // const arr = [-2, -2, 1, -2, 0, -3, -4, -4, 0];
-    console.log(separateChaining(hashSize, arr));
+    const A = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    const B = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
+    const N = 10;
+    console.log(check(A, B, N));
 }

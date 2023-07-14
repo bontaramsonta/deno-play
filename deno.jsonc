@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "dev": "deno run --watch main.ts",
+    "dev": "deno run --unstable --allow-read=hello --allow-write=hello --watch main.ts",
     "test": "deno test --watch ."
   },
   "fmt": {
