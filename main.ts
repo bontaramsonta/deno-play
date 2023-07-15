@@ -1,24 +1,51 @@
-function check(A: number[], B: number[], _N: number): boolean {
-    const frequencyMap = new Map();
-    // seed the map
-    for (const element of A) {
-        frequencyMap.set(element, (frequencyMap.get(element) || 0) + 1);
+class Stack {
+    constructor() {
+        this.a = new Array();
     }
-    for (const element of B) {
-        const frequency = frequencyMap.get(element);
-        if (frequency === undefined) {
-            return false;
-        } else if (frequency === 1) {
-            frequencyMap.delete(element);
-        } else {
-            frequencyMap.set(element, frequency - 1);
+    top() {
+        return this.a[this.a.length - 1];
+    }
+    push(x: number) {
+        this.a.push(x);
+    }
+    pop() {
+        if (this.a.length != 0) {
+            this.a.pop();
         }
     }
-    return [...frequencyMap.keys()].length === 0;
+    empty() {
+        return this.a.length == 0;
+    }
+}
+function deleteMid(s: Stack, sizeOfStack: number) {
+    delteFromMid(s, sizeOfStack, 0);
+}
+function delteFromMid(s: Stack, sizeOfStack: number, current: number) {
+    // console.log('[delete]: ', s, sizeOfStack, current);
+    if (s.empty() || current == sizeOfStack) {
+        return;
+    }
+    const x = s.top();
+    s.pop();
+    // console.log('X', Math.ceil((sizeOfStack + 1) / 2));
+    if (current === Math.floor((sizeOfStack) / 2)) {
+        return;
+    }
+    delteFromMid(s, sizeOfStack, current + 1);
+    s.push(x);
 }
 if (import.meta.main) {
-    const A = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    const B = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
-    const N = 10;
-    console.log(check(A, B, N));
+    const s = new Stack();
+    s.push(1);
+    s.push(2);
+    s.push(3);
+    s.push(4);
+    s.push(5);
+    s.push(6);
+    deleteMid(s, 6);
+    while (!s.empty()) {
+        let p = s.top();
+        s.pop();
+        console.log(p);
+    }
 }
