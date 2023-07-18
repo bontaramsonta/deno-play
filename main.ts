@@ -1,51 +1,22 @@
-class Stack {
-    constructor() {
-        this.a = new Array();
-    }
-    top() {
-        return this.a[this.a.length - 1];
-    }
-    push(x: number) {
-        this.a.push(x);
-    }
-    pop() {
-        if (this.a.length != 0) {
-            this.a.pop();
+function LongestRepeatingSubsequence(str: string): number {
+    const n = str.length;
+    const dp: number[][] = Array.from(
+        { length: n + 1 },
+        () => Array(n + 1).fill(0),
+    );
+    for (let i = 1; i <= n; i++) {
+        for (let j = 1; j <= n; j++) {
+            if (str[i - 1] === str[j - 1] && i !== j) {
+                dp[i][j] = 1 + dp[i - 1][j - 1];
+            } else {
+                dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+            }
         }
     }
-    empty() {
-        return this.a.length == 0;
-    }
-}
-function deleteMid(s: Stack, sizeOfStack: number) {
-    delteFromMid(s, sizeOfStack, 0);
-}
-function delteFromMid(s: Stack, sizeOfStack: number, current: number) {
-    // console.log('[delete]: ', s, sizeOfStack, current);
-    if (s.empty() || current == sizeOfStack) {
-        return;
-    }
-    const x = s.top();
-    s.pop();
-    // console.log('X', Math.ceil((sizeOfStack + 1) / 2));
-    if (current === Math.floor((sizeOfStack) / 2)) {
-        return;
-    }
-    delteFromMid(s, sizeOfStack, current + 1);
-    s.push(x);
+    console.log(dp);
+    return dp[n][n];
 }
 if (import.meta.main) {
-    const s = new Stack();
-    s.push(1);
-    s.push(2);
-    s.push(3);
-    s.push(4);
-    s.push(5);
-    s.push(6);
-    deleteMid(s, 6);
-    while (!s.empty()) {
-        let p = s.top();
-        s.pop();
-        console.log(p);
-    }
+    const s = 'axxxy';
+    console.log(LongestRepeatingSubsequence(s));
 }
