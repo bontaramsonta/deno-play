@@ -1,20 +1,29 @@
-//Function to find the sum of contiguous subarray with maximum sum.
-function maxSubarraySum(arr: number[], N: number) {
-    let max = Number.NEGATIVE_INFINITY;
-    let sum = 0;
-    for (let i = 0; i < N; i++) {
-        sum += arr[i];
-        if (sum > max) {
-            max = sum;
+function minJumps(arr: number[], n: number) {
+    let jumps = 0;
+    let index = 0;
+    while (index < n) {
+        jumps++;
+        // console.log('On jump', jumps, 'index', index, 'with value', arr[index]);
+        let minCostFromEnd = Number.POSITIVE_INFINITY;
+        let minCostFromEndIndex = -1;
+        let offset = arr[index];
+        while (offset > 0) {
+            const costFromEnd = n - (index + offset);
+            if (costFromEnd < minCostFromEnd) {
+                minCostFromEnd = costFromEnd;
+                minCostFromEndIndex = index + offset;
+            }
+            offset--;
         }
-        if (sum < 0) {
-            sum = 0;
-        }
+        index = minCostFromEndIndex;
     }
-    return max;
+    return jumps;
 }
 if (import.meta.main) {
-    // const s = [1, 2, 3, -2, 5];
-    const s = [-47, 43, 94, -94, -93, -59, 31, -86];
-    console.log(maxSubarraySum(s, s.length));
+    const inputs = (await Deno.readTextFile('in.txt')).split('\n').map(
+        (lines) => lines.split(' ').map(Number),
+    );
+    inputs.forEach((input) => {
+        console.log(minJumps(input, input.length));
+    });
 }
