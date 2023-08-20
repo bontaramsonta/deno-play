@@ -1,49 +1,75 @@
-function checkRotatedAndSorted(arr: number[], num: number) {
-    // it is true for 1 or 2 elements arrays
-    if (num === 1 || num === 2) return true;
-    // compare first two elements to determine the trend
-    // if first two elements are equal, compare the second and third elements
-    let trend: 'asc' | 'desc' = arr[0] === arr[1]
-        ? arr[1] < arr[2] ? 'asc' : 'desc'
-        : arr[0] < arr[1]
-        ? 'asc'
-        : 'desc';
-    console.log('trend', trend);
-    // if the trend changes more than once, return false
-    let trendChangeCount = 0;
-    for (let i = 1; i < num; i++) {
-        if (trend === 'asc') {
-            if (i === num - 1 && arr[i] > arr[0]) {
-                console.log('change trend at', i, 'to desc');
-                trendChangeCount++;
-                trend = 'desc';
-            }
-            if (arr[i] > arr[i + 1]) {
-                console.log('change trend at', i, 'to desc');
-                trendChangeCount++;
-                trend = 'desc';
-            }
-        } else {
-            if (i === num - 1 && arr[i] < arr[0]) {
-                console.log('change trend at', i, 'to asc');
-                trendChangeCount++;
-                trend = 'asc';
-            }
-            if (arr[i] < arr[i + 1]) {
-                console.log('change trend at', i, 'to asc');
-                trendChangeCount++;
-                trend = 'asc';
-            }
+import inputJson from './input.json' assert { type: 'json' };
+import lodash from 'npm:lodash';
+const fields = ['Groupings', 'Type5', 'Type4', 'Type3'] as const;
+type Field = typeof fields[number];
+type Input = {
+    id: number;
+    year: number;
+    Type: string;
+    Groupings: string;
+    Type5: string;
+    Type4: string;
+    Type3: string;
+    Type2: string;
+    Region: string;
+    Currency: string;
+    month: string;
+    value: number;
+    NewValue: string;
+};
+
+type Output = {
+    sno: string;
+    id: string;
+    category: string;
+    value: number;
+    children: Output[];
+};
+
+function groupDataBasedonFields(
+    inputJson: Input[],
+    fields: Field[],
+    key = 'main',
+    _parentId = 'main',
+    _currentField = 0,
+): Output {
+    const field = fields[_currentField];
+    const groupedData = lodash.groupBy(inputJson, field);
+    const result = [];
+    for (let i = 0; i < Object.keys(groupedData).length; i++) {
+        const key = Object.keys(groupedData)[i];
+        const value = groupedData[key];
+        const output: Output = {
+            sno: `${_parentId}.${key}.${i + 1}`,
+            id: key,
+            category: field,
+            value: lodash.sumBy(value, 'value'),
+            children: [],
+        };
+        if (_currentField < fields.length - 1) {
+            output.children.push(
+                groupDataBasedonFields(
+                    value,
+                    fields,
+                    key,
+                    `${_parentId}.${key}.${i + 1}`,
+                    _currentField + 1,
+                ),
+            );
         }
+        result.push(output);
     }
-    return trendChangeCount === 2;
+    return {
+        sno: _parentId,
+        id: key,
+        category: field,
+        value: lodash.sumBy(result, 'value'),
+        children: result,
+    };
 }
+
 if (import.meta.main) {
-    // const inputs = (await Deno.readTextFile('in.txt')).split('\n').map(
-    //     (lines) => lines.split(' ').map(Number),
-    // );
-    // inputs.forEach((input) => {
-    //     console.log(checkRotatedAndSorted(input, input.length));
-    // });
-    console.log(checkRotatedAndSorted([4, 1, 2, 3], 4));
+    const result = groupDataBasedonFields(inputJson, fields);
+    console.log(JSON.stringify(result, null, 2));
+    // console.log(JSON.stringify(groupedData, null, 2));
 }
