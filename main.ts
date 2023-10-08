@@ -1,21 +1,20 @@
-import { assertEquals } from 'https://deno.land/std@0.201.0/assert/mod.ts';
-
-function coinChange(coins: number[], sum: number) {
-    if (sum === 0) {
-        return 1;
-    } else if (sum < 0 || coins.length === 0) {
-        return 0;
-    }
-    let ways = 0;
-    // include first coin
-    ways += coinChange(coins, sum - coins[0]);
-    // remove first coin
-    ways += coinChange(coins.slice(1), sum);
-    return ways;
-}
-
 if (import.meta.main) {
-    const result = coinChange([1, 2, 3], 4);
-    console.log(result);
-    assertEquals(result, 4);
+  const db = await Deno.openKv("test.sqlite");
+  await db.set(["hello"], "foo1", { expireIn: 1000 });
+  const sleep = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
+
+  db.listenQueue(async (msg) => {
+    await sleep(1000);
+    console.log("test", msg);
+  });
+
+  const result = await db.enqueue(
+    { channel: "test", msg: "hello" },
+    {
+      delay: 2000,
+    }
+  );
+  console.log(result);
+  db.close();
 }

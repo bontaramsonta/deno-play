@@ -6,7 +6,7 @@
   },
   "fmt": {
     "options": {
-      "indentWidth": 4,
+      "indentWidth": 2,
       "useTabs": false,
       "singleQuote": true
     }
