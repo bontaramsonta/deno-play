@@ -1,13 +1,19 @@
-// @deno-types="npm:@types/express@4.17.15"
-import express, { Application, Request, Response } from "npm:express@4.18.2";
-import { appRouter } from "./app.ts";
+import {faker} from "npm:@faker-js/faker@8.3.1"
 
-const app: Application = express();
+export function createRandomUser(): User {
+  return {
+    userId: faker.string.uuid(),
+    username: faker.internet.userName(),
+    email: faker.internet.email(),
+    avatar: faker.image.avatar(),
+    password: faker.internet.password(),
+    birthdate: faker.date.birthdate(),
+    registeredAt: faker.date.past(),
+  };
+}
 
-app.get("/", (_req: Request, res: Response) => {
-  res.send("Welcome to the Dinosaur API!");
+export const USERS: User[] = faker.helpers.multiple(createRandomUser, {
+  count: 5,
 });
 
-app.use("/api", appRouter);
-
-app.listen(8000, () => console.log("Server running on port 8000"));
+console.log(USERS);
