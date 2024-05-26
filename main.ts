@@ -1,22 +1,25 @@
-import { debounce } from 'jsr:@std/async/debounce';
+const a = [8, 3, 1, 5, -6, 6, 2, 2];
+const sum = 4;
 
-console.log('[%s] Started', 'main');
-
-const log = debounce((event: Deno.FsEvent) => {
-  console.log('[%s] %s', event.kind, event.paths[0]);
-}, 200);
-
-const shouldReadDirectory = await Deno.permissions.request({
-  name: 'read',
-  path: './',
-});
-
-if (!shouldReadDirectory) {
-  throw new Error('Permission denied');
+function longestSubsequenceWithGivenSum(arr: number[], sum: number) {
+  const hash = new Map<number, number>();
+  let maxLen = 0;
+  let currentSum = 0;
+  for (let i = 0; i < arr.length; i++) {
+    currentSum += arr[i];
+    const v = hash.get(currentSum - sum);
+    if (v === undefined) {
+      if (!hash.has(currentSum)) {
+        hash.set(currentSum, i);
+      }
+    } else {
+      const len = i - v;
+      if (len > maxLen) {
+        maxLen = len;
+      }
+    }
+  }
+  return maxLen;
 }
-
-const watcher = Deno.watchFs('./');
-
-for await (const event of watcher) {
-  log(event);
-}
+const result = longestSubsequenceWithGivenSum(a, sum);
+console.log(result);
