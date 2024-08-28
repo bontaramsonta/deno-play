@@ -1,7 +1,8 @@
 {
+  "unstable": ["kv"],
   "tasks": {
-    "dev": "deno run -A --watch main.ts",
-    "dev:io": "deno run -A --watch main.ts > out.json",
+    "dev": "deno -A --watch main.ts",
+    "dev:io": "deno -A --watch main.ts > out.json",
     "test": "deno test --watch ."
   },
   "fmt": {
