@@ -1,35 +1,50 @@
-function longestCommonSubsequence(a: string, b: string) {
-  const dp = new Array(a.length + 1).fill(0).map(() =>
-    new Array(b.length + 1).fill(0)
-  );
-  for (let i = 1; i <= a.length; i++) {
-    for (let j = 1; j <= b.length; j++) {
-      if (a[i - 1] === b[j - 1]) {
-        dp[i][j] = dp[i - 1][j - 1] + 1;
-      } else {
-        dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
-      }
-    }
+class Node {
+  data: number;
+  next: Node | null;
+
+  constructor(data: number) {
+    this.data = data;
+    this.next = null;
   }
-  console.log(dp);
-  return dp[a.length][b.length];
+}
+const nodeMap = new Map<Node, number>();
+
+function countNodesInLoop(head: Node) {
+  let current: Node | null = head;
+  let index: number = 0;
+  while (current) {
+    console.log(current.data, '->');
+    if (nodeMap.has(current)) {
+      return index - nodeMap.get(current)!;
+    }
+    nodeMap.set(current, index);
+    current = current.next;
+    index++;
+  }
+  return 0;
 }
 
-function minCostToMakeStringsIdentical(
-  a: string,
-  b: string,
-  costX: number,
-  costY: number,
-) {
-  const lcs = longestCommonSubsequence(a, b);
-  const diffA = a.length - lcs;
-  const diffB = b.length - lcs;
-  return diffA * costX + diffB * costY;
-}
 if (import.meta.main) {
-  const str1 = 'abcd';
-  const str2 = 'acdb';
-  const costX = 10;
-  const costY = 20;
-  console.log(minCostToMakeStringsIdentical(str1, str2, costX, costY));
+  // LinkedList: 25->14->19->33->10->21->39->90->58->45->33
+  const head = new Node(25);
+  const second = new Node(14);
+  const third = new Node(19);
+  const fourth = new Node(33); // also eleventh
+  const fifth = new Node(10);
+  const sixth = new Node(21);
+  const seventh = new Node(39);
+  const eighth = new Node(90);
+  const ninth = new Node(58);
+  const tenth = new Node(45);
+  head.next = second;
+  second.next = third;
+  third.next = fourth;
+  fourth.next = fifth;
+  fifth.next = sixth;
+  sixth.next = seventh;
+  seventh.next = eighth;
+  eighth.next = ninth;
+  ninth.next = tenth;
+  tenth.next = fourth;
+  console.log(countNodesInLoop(head));
 }
