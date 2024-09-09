@@ -3,7 +3,9 @@
   "packages": {
     "specifiers": {
       "jsr:@hono/hono@^4.5.9": "jsr:@hono/hono@4.5.9",
+      "jsr:@std/assert": "jsr:@std/assert@0.225.2",
       "jsr:@std/bytes@^1.0.2": "jsr:@std/bytes@1.0.2",
+      "jsr:@std/internal@^0.225.1": "jsr:@std/internal@0.225.1",
       "jsr:@std/msgpack": "jsr:@std/msgpack@1.0.1",
       "npm:@aws-sdk/client-s3": "npm:@aws-sdk/client-s3@3.525.0_@aws-sdk+credential-provider-node@3.525.0",
       "npm:@types/node": "npm:@types/node@18.16.19"
@@ -12,8 +14,17 @@
       "@hono/hono@4.5.9": {
         "integrity": "47f561e67aedbd6d1e21e3a1ae26c1b80ffdb62a51c161d502e75bee17ca40af"
       },
+      "@std/assert@0.225.2": {
+        "integrity": "6fd566c3ea01654d29c2b633298b7fc7599716336233852eb87e9843658fa192",
+        "dependencies": [
+          "jsr:@std/internal@^0.225.1"
+        ]
+      },
       "@std/bytes@1.0.2": {
         "integrity": "fbdee322bbd8c599a6af186a1603b3355e59a5fb1baa139f8f4c3c9a1b3e3d57"
+      },
+      "@std/internal@0.225.1": {
+        "integrity": "7d8a812be88c2792f15ab9cf46911e521ccca50435948a8f24df5cefda96bde9"
       },
       "@std/msgpack@1.0.1": {
         "integrity": "5a0c3a915f3a0cbbdcf4040b73471f9ee77082fb3a0a3128fe776254b797ef78",
@@ -1046,6 +1057,10 @@
     }
   },
   "remote": {
+    "https://deno.land/std@0.171.0/fmt/colors.ts": "938c5d44d889fb82eff6c358bea8baa7e85950a16c9f6dae3ec3a7a729164471",
+    "https://deno.land/std@0.171.0/testing/_diff.ts": "1a3c044aedf77647d6cac86b798c6417603361b66b54c53331b312caeb447aea",
+    "https://deno.land/std@0.171.0/testing/_format.ts": "a69126e8a469009adf4cf2a50af889aca364c349797e63174884a52ff75cf4c7",
+    "https://deno.land/std@0.171.0/testing/asserts.ts": "984ab0bfb3faeed92ffaa3a6b06536c66811185328c5dd146257c702c41b01ab",
     "https://deno.land/x/hono@v3.11.7/client/client.ts": "ff340f58041203879972dd368b011ed130c66914f789826610869a90603406bf",
     "https://deno.land/x/hono@v3.11.7/client/index.ts": "3ff4cf246f3543f827a85a2c84d66a025ac350ee927613629bda47e854bfb7ba",
     "https://deno.land/x/hono@v3.11.7/client/types.ts": "ca165b8738d384361b927964466ecc8bc1436edad3d0414e30a28f40ba4ca496",

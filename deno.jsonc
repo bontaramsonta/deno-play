@@ -1,16 +1,16 @@
 {
-  "unstable": ["kv"],
+  "unstable": [
+    "kv"
+  ],
   "tasks": {
     "dev": "deno -A --watch main.ts",
     "dev:io": "deno -A --watch main.ts > out.json",
     "test": "deno test --watch ."
   },
   "fmt": {
-    "options": {
-      "indentWidth": 2,
-      "useTabs": false,
-      "singleQuote": true
-    }
+    "indentWidth": 2,
+    "useTabs": false,
+    "singleQuote": true
   },
   "imports": {
     "@env": "./env.ts",
