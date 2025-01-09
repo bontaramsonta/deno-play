@@ -1,10 +1,23 @@
-// @deno-types="npm:@types/express@4.17.15"
-import express, { Router } from "npm:express@4.18.2";
+import { Context, Hono } from '@hono/hono';
 
-const router: Router = express.Router();
+const app = new Hono();
 
-router.get("/", (_req, res) => {
-  res.send("Hello by express! app");
+app.get('/', (c: Context) => c.text('Hello Hono!'));
+
+app.get('/api/users', (c: Context) => {
+  // Example route, replace with actual logic
+  return c.json([
+    { id: 1, name: 'Alice' },
+    { id: 2, name: 'Bob' },
+  ]);
 });
 
-export { router as appRouter };
+app.post('/api/users', async (c: Context) => {
+  const body = await c.req.json();
+  // Example route, replace with actual logic
+  console.log('Received new user:', body);
+  return c.json({ message: 'User created successfully' }, 201);
+});
+
+export default app;
+// run with deno serve --watch [--parallel] app.ts

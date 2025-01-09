@@ -1,19 +1,19 @@
 {
+  "unstable": ["kv"],
   "tasks": {
-    "dev": "deno run -A --watch main.ts",
-    "dev:io": "deno run -A --watch main.ts > out.json",
-    "test": "deno test --watch ."
+    "dev": "deno -A --watch main.ts",
+    "dev:io": "deno -A --watch main.ts > out.json",
+    "test": "deno test --watch .",
   },
   "fmt": {
-    "options": {
-      "indentWidth": 2,
-      "useTabs": false,
-      "singleQuote": true
-    }
+    "indentWidth": 2,
+    "useTabs": false,
+    "singleQuote": true,
   },
   "imports": {
     "@env": "./env.ts",
     "@functions": "./functions/index.ts",
-    "@std/assert": "jsr:@std/assert@^1.0.10"
-  }
+    "@std/assert": "jsr:@std/assert@^1.0.10",
+    "@hono/hono": "jsr:@hono/hono@^4.5.9",
+  },
 }

@@ -8,5 +8,11 @@
   },
   "[json]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "denoland.vscode-deno"
   }
 }
