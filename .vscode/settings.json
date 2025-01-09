@@ -1,10 +1,12 @@
 {
-  "deno.enable": true,
+  "deno.enablePaths": ["."],
   "editor.formatOnSave": true,
-  "deno.unstable": true,
   "editor.defaultFormatter": "denoland.vscode-deno",
   "prettier.enable": false,
-  "[typescript]": {
+  "[jsonc]": {
+    "editor.defaultFormatter": "denoland.vscode-deno"
+  },
+  "[json]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
   }
 }

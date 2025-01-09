@@ -1,35 +1,33 @@
-function longestCommonSubsequence(a: string, b: string) {
-  const dp = new Array(a.length + 1).fill(0).map(() =>
-    new Array(b.length + 1).fill(0)
+import { assertEquals } from '@std/assert';
+
+const printConfiguration = (obj: object): void => {
+  Object.entries(obj).map((k, v) => `* ${k}: ${v}`);
+  console.log(
+    `CONFIGURED WITH OPTIONS:${JSON.stringify(obj, null, 2)}`,
   );
-  for (let i = 1; i <= a.length; i++) {
-    for (let j = 1; j <= b.length; j++) {
-      if (a[i - 1] === b[j - 1]) {
-        dp[i][j] = dp[i - 1][j - 1] + 1;
-      } else {
-        dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
-      }
-    }
+};
+function parse(RELEASE_INFO: string) {
+  const splits = RELEASE_INFO.trim().split(' ').filter(Boolean);
+  const TICKET = splits[0]?.trim();
+  const RELEASE_NAME = splits[1]?.trim();
+  const PROJECT = TICKET.split('-')[0]?.trim();
+  printConfiguration({ TICKET, RELEASE_NAME, PROJECT });
+  if (!RELEASE_NAME || !PROJECT) {
+    return false;
   }
-  console.log(dp);
-  return dp[a.length][b.length];
+  return true;
 }
 
-function minCostToMakeStringsIdentical(
-  a: string,
-  b: string,
-  costX: number,
-  costY: number,
-) {
-  const lcs = longestCommonSubsequence(a, b);
-  const diffA = a.length - lcs;
-  const diffB = b.length - lcs;
-  return diffA * costX + diffB * costY;
-}
-if (import.meta.main) {
-  const str1 = 'abcd';
-  const str2 = 'acdb';
-  const costX = 10;
-  const costY = 20;
-  console.log(minCostToMakeStringsIdentical(str1, str2, costX, costY));
-}
+const testCases = [
+  { input: '-235 RELEASE-1.0.3', expected: false },
+  { input: 'AVHN-235     RELEASE-1.0.3', expected: true },
+  { input: '  AMCC-2352464 RELESE-1353 ', expected: true },
+  { input: '  AMCC REL  ', expected: true },
+];
+
+testCases.forEach((t) =>
+  Deno.test(`on ${t.input}`, () => {
+    const result = parse(t.input);
+    assertEquals(result, t.expected);
+  })
+);
