@@ -1,3 +1,7 @@
 images
+<<<<<<< HEAD
+.env
+=======
 env.*
 .data
+>>>>>>> 8fd4c96aaca4739ff2fd77989544a90274964bb5
